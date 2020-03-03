@@ -30,7 +30,7 @@ router.post('/profile', (req, res, next) => {
   });
 
 
-
+  
 // GET route => to retrieve a specific profile
 router.get('/user/:userId/profile/:profileId', (req, res, next) => {
   Profile.findById(req.params.profileId)
