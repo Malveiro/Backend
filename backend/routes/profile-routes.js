@@ -2,10 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Profile = require('../models/profile-model');
 const User = require('../models/user-model');
-
 const router = express.Router();
-
-
 
 // POST route => to create a new profile
 router.post('/profile', (req, res, next) => {
@@ -28,8 +25,6 @@ router.post('/profile', (req, res, next) => {
         res.json(err);
       });
   });
-
-
   
 // GET route => to retrieve a specific profile
 router.get('/user/:userId/profile/:profileId', (req, res, next) => {
@@ -41,9 +36,6 @@ router.get('/user/:userId/profile/:profileId', (req, res, next) => {
       res.json(error);
     });
 });
-
-
-
 
 // PUT route => to update a specific profile
 router.put('/tasks/:id', (req, res, next) => {
