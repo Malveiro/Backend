@@ -21,12 +21,11 @@ router.post('/product', (req, res, next) => {
     });
 });
 
-
-
 // GET route => to retrieve a specific product
 router.get('/product/:productId', (req, res, next) => {
   Product.findById(req.params.productId)
     .then(product => {
+      console.log("this is it>>>>>>>>>>>>>", product)
       res.json(product);
     })
     .catch(error => {
