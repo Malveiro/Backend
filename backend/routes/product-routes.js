@@ -22,6 +22,17 @@ router.post('/product', (req, res, next) => {
 });
 
 
+// GET route => to get all the projects
+router.get('/product', (req, res, next) => {
+  Product.find()
+    .then(allTheProducts => {
+      res.json(allTheProducts);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 
 // GET route => to retrieve a specific product
 router.get('/product/:productId', (req, res, next) => {
