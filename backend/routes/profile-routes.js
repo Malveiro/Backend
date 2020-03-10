@@ -37,36 +37,5 @@ router.get('/user/:userId/profile/:profileId', (req, res, next) => {
     });
 });
 
-// PUT route => to update a specific profile
-router.put('/tasks/:id', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({ message: 'Specified id is not valid' });
-    return;
-  }
-
-  Task.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-      res.json({ message: `Task with ${req.params.id} is updated successfully.` });
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
-
-// DELETE route => to delete a specific task
-router.delete('/tasks/:id', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({ message: 'Specified id is not valid' });
-    return;
-  }
-
-  Task.findByIdAndRemove(req.params.id)
-    .then(() => {
-      res.json({ message: `Task with ${req.params.id} is removed successfully.` });
-    })
-    .catch(error => {
-      res.json(error);
-    });
-});
 
 module.exports = router;
