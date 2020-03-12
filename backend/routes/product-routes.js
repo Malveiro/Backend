@@ -47,4 +47,21 @@ router.get('/product/:productId', (req, res, next) => {
 });
 
 
+// DELETE route => to delete a specific product
+router.delete('/product/:productId', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.productId)) {
+    res.status(400).json({ message: 'Specified id is not valid' });
+    return;
+  }
+
+  Product.findByIdAndRemove(req.params.productId)
+    .then(() => {
+      res.json({ message: `Product with ${req.params.productId} is removed successfully.` });
+    })
+    .catch(error => {
+      res.json(error);
+    });
+});
+
+
 module.exports = router;
