@@ -38,7 +38,7 @@ router.get('/product', (req, res, next) => {
 router.get('/product/:productId', (req, res, next) => {
   Product.findById(req.params.productId)
     .then(product => {
-      console.log("this is it>>>>>>>>>>>>>", product)
+      console.log("this is it -->", product)
       res.json(product);
     })
     .catch(error => {

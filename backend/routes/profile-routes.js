@@ -43,9 +43,10 @@ admin.initializeApp({
 // POST route => to create a new Profile (with JWT authentication)
 router.post('/profile', (req, res, next) => {
   if (req.headers.authorization) {
+    console.log("token? ---->", req.headers.authorization);
     admin.auth().verifyIdToken(req.headers.authorization)
       .then((decodedToken) => {
-        // console.log('decoded token', decodedToken);
+        console.log('decoded token', decodedToken);
         const { name, net_income, avg_expenses, month_savings} = req.body;
         Profile.create({
           user: decodedToken.uid,
@@ -71,10 +72,11 @@ router.post('/profile', (req, res, next) => {
   
 
 
-// GET route => to retrieve a specific profile
-router.get('/user/:userId/profile/:profileId', (req, res, next) => {
+// GET route => to retrieve a specific Profile
+router.get('/profile/:profileId', (req, res, next) => {
   Profile.findById(req.params.profileId)
     .then(profile => {
+      console.log("this is it -->", profile)
       res.json(profile);
     })
     .catch(error => {
@@ -84,19 +86,33 @@ router.get('/user/:userId/profile/:profileId', (req, res, next) => {
 
 
 
+
 // PUT route => to update a specific profile
-router.put('/user/:userId/profile/:profileId', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.profileId)) {
+router.put('/profile/:user', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
   Profile.findByIdAndUpdate(req.params.profileId, req.body)
     .then(() => {
-      res.json({ message: `Profile with ${req.params.profileId} is updated successfully.` });
+      res.json({ message: `Profile with ${req.params.user} is updated successfully.` });
     })
     .catch(error => {
       res.json(error);
+    });
+});
+
+
+
+// GET route => to get all the profiles
+router.get('/profile', (req, res, next) => {
+  Profile.find()
+    .then(allTheProfile => {
+      res.json(allTheProfile);
+    })
+    .catch(err => {
+      res.json(err);
     });
 });
 
