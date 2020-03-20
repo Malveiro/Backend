@@ -16,7 +16,7 @@ const passport      = require('passport');
 require('./configs/passport');
 
 mongoose
-  .connect('mongodb://localhost/backend', {
+  .connect(process.env.MONGODB_URI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
