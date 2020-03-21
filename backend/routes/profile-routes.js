@@ -16,10 +16,29 @@ admin.initializeApp({
 
 
 
+// POST route => to create a new project
+router.post('/signup', (req, res, next) => {
+  const { user, name, net_income, avg_expenses, month_savings } = req.body;
+  Profile.create({
+    user,
+    name,
+    net_income,
+    avg_expenses,
+    month_savings
+  })
+    .then(response => {
+      res.json(response);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
+
 // // POST route => to create a new profile
-// router.post('/profile', (req, res, next) => {
+// router.post('/signup', (req, res, next) => {
 //     Profile.create({
-//       user: req.body.userID,
+//       user: req.body.user,
 //       name: req.body.name,
 //       net_income: req.body.net_income,
 //       avg_expense: req.body.avg_expense,
@@ -40,41 +59,41 @@ admin.initializeApp({
 
 
 
-// POST route => to create a new Profile (with JWT authentication)
-router.post('/profile', (req, res, next) => {
-  if (req.headers.authorization) {
-    console.log("token? ---->", req.headers.authorization);
-    admin.auth().verifyIdToken(req.headers.authorization)
-      .then((decodedToken) => {
-        console.log('decoded token', decodedToken);
-        const { name, net_income, avg_expenses, month_savings} = req.body;
-        Profile.create({
-          user: decodedToken.uid,
-          name,
-          net_income,
-          avg_expenses,
-          month_savings
-        })
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            res.json(err);
-          });
-      }).catch(() => {
-        res.status(403).json({message: 'Unauthorized_if'});
-      });
-  } else {
-    res.status(403).json({message: 'Unauthorized_else'});
-  }
-});
+// // POST route => to create a new Profile (with JWT authentication)
+// router.post('/signup', (req, res, next) => {
+//   if (req.headers.authorization) {
+//     console.log("token? ---->", req.headers.authorization);
+//     admin.auth().verifyIdToken(req.headers.authorization)
+//       .then((decodedToken) => {
+//         console.log('decoded token', decodedToken);
+//         const { name, net_income, avg_expenses, month_savings} = req.body;
+//         Profile.create({
+//           user: decodedToken.uid,
+//           name,
+//           net_income,
+//           avg_expenses,
+//           month_savings
+//         })
+//           .then(response => {
+//             res.json(response);
+//           })
+//           .catch(err => {
+//             res.json(err);
+//           });
+//       }).catch(() => {
+//         res.status(403).json({message: 'Unauthorized_if'});
+//       });
+//   } else {
+//     res.status(403).json({message: 'Unauthorized_else'});
+//   }
+// });
 
   
 
 
 // GET route => to retrieve a specific Profile
-router.get('/profile/:profileId', (req, res, next) => {
-  Profile.findById(req.params.profileId)
+router.get('/profile/:user', (req, res, next) => {
+  Profile.find(req.params.user)
     .then(profile => {
       console.log("this is it -->", profile)
       res.json(profile);
@@ -88,15 +107,15 @@ router.get('/profile/:profileId', (req, res, next) => {
 
 
 // PUT route => to update a specific profile
-router.put('/profile/:user', (req, res, next) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.user)) {
+router.put('/profile/:profileId', (req, res, next) => {
+  if (!mongoose.Types.ObjectId.isValid(req.params.profileId)) {
     res.status(400).json({ message: 'Specified id is not valid' });
     return;
   }
 
   Profile.findByIdAndUpdate(req.params.profileId, req.body)
     .then(() => {
-      res.json({ message: `Profile with ${req.params.user} is updated successfully.` });
+      res.json({ message: `Profile with ${req.params.profileId} is updated successfully.` });
     })
     .catch(error => {
       res.json(error);
