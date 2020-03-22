@@ -16,7 +16,7 @@ admin.initializeApp({
 
 
 
-// POST route => to create a new project
+// POST route => to create a new profile
 router.post('/signup', (req, res, next) => {
   const { user, name, net_income, avg_expenses, month_savings } = req.body;
   Profile.create({
@@ -91,17 +91,32 @@ router.post('/signup', (req, res, next) => {
   
 
 
-// GET route => to retrieve a specific Profile
+// // GET route => to retrieve a specific Profile by ID
+// router.get('/profile/:profileId', (req, res, next) => {
+//   Profile.findById(req.params.profileId)
+//     .then(profile => {
+//       console.log("this is it -->", profile)
+//       res.json(profile);
+//     })
+//     .catch(error => {
+//       res.json(error);
+//     });
+// });
+
+
+// GET route => to retrieve a specific Profile by user (aka email)
 router.get('/profile/:user', (req, res, next) => {
-  Profile.find(req.params.user)
+  Profile.findOne({user: req.params.user})
     .then(profile => {
-      console.log("this is it -->", profile)
+      console.log("backend: this is it? -->", profile)
       res.json(profile);
     })
     .catch(error => {
       res.json(error);
     });
 });
+
+
 
 
 
