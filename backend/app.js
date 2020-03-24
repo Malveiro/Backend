@@ -112,24 +112,6 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
-//allow access to the API from different domains/origins
-app.use(cors({
-  // this could be multiple domains/origins, but we will allow just our React app
-  origin: ["http://localhost:3000", "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"],
-  // vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"
-  })
-);
-
-
-app.use(function(req, res, next) {
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.setHeader('Access-Control-Allow-Origin', 'http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
 
 
 // Middleware Setup
@@ -151,12 +133,31 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // res.setHeader('Access-Control-Allow-Origin', 'http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com');
+  // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
+
+//allow access to the API from different domains/origins
+app.use(cors({
+  credentials: true,
+  // this could be multiple domains/origins, but we will allow just our React app
+  origin: ["http://localhost:3000", "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"],
+  // vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"
+  })
+);
 
 
 const index = require('./routes/index');
