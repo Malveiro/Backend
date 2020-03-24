@@ -14,9 +14,11 @@ router.post('/product', (req, res, next) => {
     category
   })
     .then(response => {
+      res = addCorsHeaders(res);
       res.json(response);
     })
     .catch(err => {
+      res = addCorsHeaders(res);
       res.json(err);
     });
 });
@@ -30,6 +32,7 @@ router.get('/product', (req, res, next) => {
       res.json(allTheProducts);
     })
     .catch(err => {
+      res = addCorsHeaders(res);
       res.json(err);
     });
 });
@@ -39,10 +42,12 @@ router.get('/product', (req, res, next) => {
 router.get('/product/:productId', (req, res, next) => {
   Product.findById(req.params.productId)
     .then(product => {
-      console.log("this is it -->", product)
+      console.log("this is it -->", product);
+      res = addCorsHeaders(res);
       res.json(product);
     })
     .catch(error => {
+      res = addCorsHeaders(res);
       res.json(error);
     });
 });
@@ -57,9 +62,11 @@ router.delete('/product/:productId', (req, res, next) => {
 
   Product.findByIdAndRemove(req.params.productId)
     .then(() => {
+      res = addCorsHeaders(res);
       res.json({ message: `Product with ${req.params.productId} is removed successfully.` });
     })
     .catch(error => {
+      res = addCorsHeaders(res);
       res.json(error);
     });
 });

@@ -8,6 +8,8 @@ const Profile = require('../models/profile-model');
 const User = require('../models/user-model');
 const router = express.Router();
 
+const addCorsHeaders = require('./cors-headers.js');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -27,9 +29,11 @@ router.post('/signup', (req, res, next) => {
     month_savings
   })
     .then(response => {
+      res = addCorsHeaders(res);
       res.json(response);
     })
     .catch(err => {
+      res = addCorsHeaders(res);
       res.json(err);
     });
 });
@@ -108,10 +112,12 @@ router.post('/signup', (req, res, next) => {
 router.get('/profile/:user', (req, res, next) => {
   Profile.findOne({user: req.params.user})
     .then(profile => {
-      console.log("backend: this is it? -->", profile)
+      console.log("backend: this is it? -->", profile);
+      res = addCorsHeaders(res);
       res.json(profile);
     })
     .catch(error => {
+      res = addCorsHeaders(res);
       res.json(error);
     });
 });
@@ -125,9 +131,11 @@ router.put('/profile/:profileId', (req, res, next) => {
 
   Profile.findByIdAndUpdate(req.params.profileId, req.body)
     .then(() => {
+      res = addCorsHeaders(res);
       res.json({ message: `Profile with ${req.params.profileId} is updated successfully.` });
     })
     .catch(error => {
+      res = addCorsHeaders(res);
       res.json(error);
     });
 });
@@ -138,9 +146,11 @@ router.put('/profile/:profileId', (req, res, next) => {
 router.get('/profile', (req, res, next) => {
   Profile.find()
     .then(allTheProfile => {
+      res = addCorsHeaders(res);
       res.json(allTheProfile);
     })
     .catch(err => {
+      res = addCorsHeaders(res);
       res.json(err);
     });
 });
