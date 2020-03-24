@@ -116,11 +116,6 @@ router.get('/profile/:user', (req, res, next) => {
     });
 });
 
-
-
-
-
-
 // PUT route => to update a specific profile
 router.put('/profile/:profileId', (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.profileId)) {
