@@ -112,11 +112,11 @@ const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.
 
 const app = express();
 
-allow access to the API from different domains/origins
+//allow access to the API from different domains/origins
 app.use(cors({
   // this could be multiple domains/origins, but we will allow just our React app
-  origin: "http://localhost:3000"
-  // vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"
+  origin: "http://localhost:3000",
+  vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"
   })
 );
 
