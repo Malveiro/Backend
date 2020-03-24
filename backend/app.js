@@ -116,7 +116,7 @@ const app = express();
 app.use(cors({
   // this could be multiple domains/origins, but we will allow just our React app
   origin: "http://localhost:3000",
-  vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com/" 
+  vary: "http://time-is-money-dude.s3-website.eu-west-2.amazonaws.com"
   })
 );
 
