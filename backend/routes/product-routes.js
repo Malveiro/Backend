@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 const Product = require('../models/product-model');
-
+const addCorsHeaders = require('./cors-headers.js');
 
 // POST route => to create a new product
 router.post('/product', (req, res, next) => {
@@ -26,6 +26,7 @@ router.post('/product', (req, res, next) => {
 router.get('/product', (req, res, next) => {
   Product.find()
     .then(allTheProducts => {
+      res = addCorsHeaders(res);
       res.json(allTheProducts);
     })
     .catch(err => {
